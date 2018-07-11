@@ -14,7 +14,7 @@ public class AutomatasSintactico {
     Pila cLP=new Pila();//Variable para llevar el control de las llaves y parentesis
     String caja="";
    
-    public String Recorrido(String Texto){
+    public String Recorrido(String Texto){ //Comenntario Git
      String state="q0";   
      String Valida="";
         
