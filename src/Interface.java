@@ -232,18 +232,19 @@ public class Interface extends javax.swing.JFrame {
             tblSimbolos.setModel(s.m);
             ErrCon.setText("Build Succesful");
         }else{
-            ErrCon.setText(err(Err));
+            ErrCon.setText(Err);
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    private String err(String err){
+    /*private String err(String err){
         String[] S = err.split("#");
         String t="";
+        //System.out.println(mostrar(S));
         for( int i=0; i<S.length; i++ ){
             t="Error semántico;; "+S[i]+"\n";
         }
         return t;
-    }
+    }*/
     
     private String mostrar(String[] s){
         String temp="";

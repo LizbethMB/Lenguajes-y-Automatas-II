@@ -286,7 +286,7 @@ public class Sintáctico {
                         Valida=Valida+"Error Sintactico;; Expresión no valida#";
                     }
                 }else if(!Uno[0].equals("}") && !Uno[0].equals(")")){
-                System.out.println("Encuentra else: "+mostrar(Uno));
+                //System.out.println("Encuentra else: "+mostrar(Uno));
                 Valida=Valida+"Error Sintactico;; Instruccion no Valida, Debe ser movimiento o declaracion#";
             }
         }
@@ -311,61 +311,85 @@ public class Sintáctico {
                 }
             }
             //validación de espacio
-            if( Exp.charAt(i)==32 || Exp.charAt(i)==44 ){
-                if( letra==true || num==true || opR==true ){//verifica si se estaba escribiendo algo antes
-                    letra = num = opR = false;//lo que sea que este escribiendo lo pasa a que se dejo de escribir
-                    Simbolos = Simbolos+"#";
+            if( Exp.charAt(i)==32 ){
+                if(com==true){//si se escribe dentro de comillas pon el espacio
+                    Simbolos = Simbolos+Exp.charAt(i);
+                }else{//si no se escribe dentro de comillas se ignora el espacio
+                    if( letra==true || num==true || opR==true ){//verifica si se estaba escribiendo algo antes
+                        letra = num = opR = false;//lo que sea que este escribiendo lo pasa a que se dejo de escribir
+                        Simbolos = Simbolos+"#";
+                    }
                 }
             }
             //validación de coma
             if( Exp.charAt(i)==44 ){
-                if( letra==true || num==true || opR==true ){//verifica si se estaba escribiendo algo antes
-                    letra = num = opR = false;//lo que sea que este escribiendo lo pasa a que se dejo de escribir
-                    Simbolos = Simbolos+"#,#";
+                if(com==true){//si se escribe dentro de comillas pon la letra
+                    Simbolos = Simbolos+Exp.charAt(i);
+                }else{
+                    if( letra==true || num==true || opR==true ){//verifica si se estaba escribiendo algo antes
+                        letra = num = opR = false;//lo que sea que este escribiendo lo pasa a que se dejo de escribir
+                        Simbolos = Simbolos+"#,#";
+                    }
                 }
             }
             //validación de punto y coma
             if( Exp.charAt(i)==59 ){
-                if( letra==true || num==true || opR==true ){//verifica si se estaba escribiendo algo antes
-                    letra = num = opR = false;//lo que sea que este escribiendo lo pasa a que se dejo de escribir
-                    Simbolos = Simbolos+"#;#";
+                if(com==true){//si se escribe dentro de comillas pon la letra
+                    Simbolos = Simbolos+Exp.charAt(i);
+                }else{
+                    if( letra==true || num==true || opR==true ){//verifica si se estaba escribiendo algo antes
+                        letra = num = opR = false;//lo que sea que este escribiendo lo pasa a que se dejo de escribir
+                        Simbolos = Simbolos+"#;#";
+                    }
                 }
             }
             //validación si es letra
             if( esLetra(Exp.charAt(i)) ){
-                if( num ){//si es numero agrega un separador para el esplit posterior y quita la bandera de que se escribian numeros
-                    Simbolos = Simbolos+"#";
-                    num=false;
-                }else if( opR ){//si es operador agrega un separador para el esplit posterior y quita la bandera de que se escribian operadores
-                    Simbolos = Simbolos+"#";
-                    opR=false;
+                if(com==true){//si se escribe dentro de comillas pon la letra
+                    Simbolos = Simbolos+Exp.charAt(i);
+                }else{
+                    if( num ){//si es numero agrega un separador para el esplit posterior y quita la bandera de que se escribian numeros
+                        Simbolos = Simbolos+"#";
+                        num=false;
+                    }else if( opR ){//si es operador agrega un separador para el esplit posterior y quita la bandera de que se escribian operadores
+                        Simbolos = Simbolos+"#";
+                        opR=false;
+                    }
+                    letra=true;//activa la bandera de que se escriben letras
+                    Simbolos = Simbolos+Exp.charAt(i);
                 }
-                letra=true;//activa la bandera de que se escriben letras
-                Simbolos = Simbolos+Exp.charAt(i);
             }
             //validación si es número
             if( esNumero(Exp.charAt(i)) ){
-                if( letra ){//si es letra agrega un separador para el esplit posterior y quita la bandera de que se escribian letras
-                    Simbolos = Simbolos+"#";
-                    letra=false;
-                }else if( opR ){//si es operador agrega un separador para el esplit posterior y quita la bandera de que se escribian operadores
-                    Simbolos = Simbolos+"#";
-                    opR=false;
+                if(com==true){//si se escribe dentro de comillas pon el número
+                    Simbolos = Simbolos+Exp.charAt(i);
+                }else{
+                    if( letra ){//si es letra agrega un separador para el esplit posterior y quita la bandera de que se escribian letras
+                        Simbolos = Simbolos+"#";
+                        letra=false;
+                    }else if( opR ){//si es operador agrega un separador para el esplit posterior y quita la bandera de que se escribian operadores
+                        Simbolos = Simbolos+"#";
+                        opR=false;
+                    }
+                    num=true;//activa la bandera de que se escriben numeros
+                    Simbolos = Simbolos+Exp.charAt(i);
                 }
-                num=true;//activa la bandera de que se escriben numeros
-                Simbolos = Simbolos+Exp.charAt(i);
             }
             //validación si es operador relacional
             if( esOpR(Exp.charAt(i)) ){
-                if( letra ){//si es letra agrega un separador para el esplit posterior y quita la bandera de que se escribian letras
-                    Simbolos = Simbolos+"#";
-                    letra=false;
-                }else if( num ){//si es numero agrega un separador para el esplit posterior y quita la bandera de que se escribian numeros
-                    Simbolos = Simbolos+"#";
-                    num=false;
+                if(com==true){//si se escribe dentro de comillas pon el operador
+                    Simbolos = Simbolos+Exp.charAt(i);
+                }else{
+                    if( letra ){//si es letra agrega un separador para el esplit posterior y quita la bandera de que se escribian letras
+                        Simbolos = Simbolos+"#";
+                        letra=false;
+                    }else if( num ){//si es numero agrega un separador para el esplit posterior y quita la bandera de que se escribian numeros
+                        Simbolos = Simbolos+"#";
+                        num=false;
+                    }
+                    opR=true;//activa la bandera de que se escriben operadores
+                    Simbolos = Simbolos+Exp.charAt(i);
                 }
-                opR=true;//activa la bandera de que se escriben operadores
-                Simbolos = Simbolos+Exp.charAt(i);
             }
         }
         return Simbolos.split("#");

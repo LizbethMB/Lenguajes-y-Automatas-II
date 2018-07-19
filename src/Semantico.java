@@ -57,33 +57,47 @@ public class Semantico{
         for( int i=0; i<id.size(); i++ ){
             s = buscarTipoDatoTabla( id.get(i),temp );
             if( s!=null ){
-                System.out.println(id.get(i)+": "+s[0]);
-                if( tipoDatos(s[0])==true ){
+                if( tipoDatos(s[0])==true ){//si es un tipo de dato
                     if( c==true ){//si ya se ha declarado antes devuelve un error
+                        System.out.println(id.get(i)+": "+s[0]);
                         error = error+"Identificador: "+id.get(i)+" ya declarada#";
+                        c=false;
+                        System.out.println("Cambio a falso(1) con: "+id.get(i));
+                        temp=0;
                     }else{
                         c=true;
+                        System.out.println("Cambio a verdadero con: "+id.get(i));
                         i--;
                         temp = Integer.parseInt(s[1].toString());
                     }
+                }else if( c ){
+                    c=false;//si no se encuentra otra declaración se reinicia contador
+                    System.out.println("Cambio a falso(2) con: "+id.get(i));
+                    temp=0;
+                    error = error+"todo bien 2";
                 }else{
-                    c=false;//si no se encuentra otra declaración se reinicia contador para 
+                    error = error+"Identificador: \""+id.get(i)+"\" no ha sido declarada#";
+                    temp=0;
                 }
             }else if(c==false){
                 error = error+"Identificador: "+id.get(i)+" no ha sido declarada#";
+                temp=0;
                 //si no se encuentra declarado entonces devuelve error
             }
         }//fin de for
+        //System.out.println(error);
         return error;
     }
     
     //busca el tipo de dato antes de la variable
     private Object[] buscarTipoDatoTabla(String b, int desde){
         for( int i=desde; i<m.getRowCount(); i++ ){
-            if( m.getValueAt(i, 1)!=null){
-                if( m.getValueAt(i, 1).equals(b) ){
-                    Object S[] = {m.getValueAt(i-1, 1).toString(), (i+1)};
-                    m.setValueAt(S[0], i, 6);
+            if( m.getValueAt(i, 1)!=null){//ignora la linea en blanco
+                if( m.getValueAt(i, 1).equals(b) ){//si el valor es igual al de la busqueda
+                    Object S[] = {m.getValueAt(i-1, 1).toString(), (i+1)};//prepara el valor a devolver, Lo que esta antes de declararlo, linea en que se quejo
+                    if( tipoDatos(S[0])==true ){//si la palabra de fila anterior es un tipo e dato se pone en la posición 6 de la fila i de la tabla
+                        m.setValueAt(S[0], i, 6);
+                    }
                     return S;
                 }
             }
@@ -96,7 +110,10 @@ public class Semantico{
     }
     
     public boolean comprobadorTipos(){
+/*1. Separar las variables por tipos de datos (arreglo de Int, String, Double)*/
         
+/*2. Hacer las validaciones especificas (según el tipo al que pertenezca) de que la expreción obtenida del valor corresponda con el tipo de dato al pertence.
+3. Mostrar el listado de errores*/
         return true;
     }
 }
