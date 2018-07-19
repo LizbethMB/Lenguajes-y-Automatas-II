@@ -225,6 +225,14 @@ public class Interface extends javax.swing.JFrame {
             cad=cad+rec[i]+"\n";
         }
         txtRecorridos.setText(cad);
+        
+        Semantico s = new Semantico(tblSimbolos.getModel());
+        if( s.unicidad() ){
+            tblSimbolos.setModel(s.m);
+            ErrCon.setText("Build Succesful");
+        }else{
+            ErrCon.setText("Error de unicidad");
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private String mostrar(String[] s){

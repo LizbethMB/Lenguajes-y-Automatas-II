@@ -65,9 +65,22 @@ public class Analisis_Lexico {
     }
     
     public String[] generaArray(String Exp){
-        boolean letra=false, num=false, opR=false;
+        boolean letra=false, num=false, opR=false, com=false;
         String Simbolos="";
         for(int i=0; i<Exp.length(); i++){
+            //validación de comillas
+            if( Exp.charAt(i)==34 ){
+                if(com==false){
+                    com=true;
+                    if( letra==true || num==true || opR==true ){//verifica si se estaba escribiendo algo antes
+                        letra = num = opR = false;//lo que sea que este escribiendo lo pasa a que se dejo de escribir
+                    }
+                    Simbolos = Simbolos+Exp.charAt(i);
+                }else{
+                    com=false;
+                    Simbolos = Simbolos+Exp.charAt(i)+"#";
+                }
+            }
             //validación de espacio
             if( Exp.charAt(i)==32 ){
                 if( letra==true || num==true || opR==true ){//verifica si se estaba escribiendo algo antes
@@ -227,10 +240,14 @@ public class Analisis_Lexico {
                         else
                             Simbolos = Simbolos + "Número,"+TV[AL]+",No,Digito,"+linea+"#";
                         break;
+                    case "\"":
+                        break;
                     default:
                         int b=0;
                         //nombre de metodo
-                        if( esNomMet(TV[AL]) ){
+                        if( TV[AL].equals("task") ){
+                            Simbolos = Simbolos + "task,"+TV[AL]+",si,t seguida de a seguida de s seguida de k,"+linea+"#";
+                        }else if( esNomMet(TV[AL]) ){
                             Simbolos = Simbolos + "Nombre Método,"+TV[AL]+",No,Caracter seguido de caracteres,"+linea+"#";
                         }else if( esId(TV[AL]) ){
                             Simbolos = Simbolos + "Identificador,"+TV[AL]+",No,Caracter seguido de caracteres,"+linea+","+valor(TV)+"#";
