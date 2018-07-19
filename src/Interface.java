@@ -227,14 +227,24 @@ public class Interface extends javax.swing.JFrame {
         txtRecorridos.setText(cad);
         
         Semantico s = new Semantico(tblSimbolos.getModel());
-        if( s.unicidad() ){
+        Err = s.unicidad();
+        if( Err.equals("") ){
             tblSimbolos.setModel(s.m);
             ErrCon.setText("Build Succesful");
         }else{
-            ErrCon.setText("Error de unicidad");
+            ErrCon.setText(err(Err));
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private String err(String err){
+        String[] S = err.split("#");
+        String t="";
+        for( int i=0; i<S.length; i++ ){
+            t="Error semántico;; "+S[i]+"\n";
+        }
+        return t;
+    }
+    
     private String mostrar(String[] s){
         String temp="";
         for(int i=0; i<s.length; i++){

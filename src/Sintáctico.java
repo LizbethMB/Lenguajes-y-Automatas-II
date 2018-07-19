@@ -281,15 +281,11 @@ public class Sintáctico {
         }//Fin Si no hubo errores de tamaño
         else{
             String Uno[]=Texto.split(" ");
-            //System.out.println(Uno.length);
-            //if(Uno.length==4){ //Hacemos un split con el punto de la instruccion
-                //String Instruccion[]=new String[4]; // Hacemos una arreglo donde guardaremos todas las partes de la instruccion
                 if(Uno[0].equals("Int") || Uno[0].equals("String") || Uno[0].equals("Double") ){
                     if( tipoDatos(Texto)==false){
                         Valida=Valida+"Error Sintactico;; Expresión no valida#";
                     }
-                }
-            /*}*/else if(!Uno[0].equals("}") && !Uno[0].equals(")")){
+                }else if(!Uno[0].equals("}") && !Uno[0].equals(")")){
                 System.out.println("Encuentra else: "+mostrar(Uno));
                 Valida=Valida+"Error Sintactico;; Instruccion no Valida, Debe ser movimiento o declaracion#";
             }
@@ -298,9 +294,22 @@ public class Sintáctico {
     }//Final metodo 
     
     public String[] generaArray(String Exp){
-        boolean letra=false, num=false, opR=false;
+        boolean letra=false, num=false, opR=false, com=false;
         String Simbolos="";
         for(int i=0; i<Exp.length(); i++){
+            //validación de comillas
+            if( Exp.charAt(i)==34 ){
+                if(com==false){
+                    com=true;
+                    if( letra==true || num==true || opR==true ){//verifica si se estaba escribiendo algo antes
+                        letra = num = opR = false;//lo que sea que este escribiendo lo pasa a que se dejo de escribir
+                    }
+                    Simbolos = Simbolos+Exp.charAt(i);
+                }else{
+                    com=false;
+                    Simbolos = Simbolos+Exp.charAt(i)+"#";
+                }
+            }
             //validación de espacio
             if( Exp.charAt(i)==32 || Exp.charAt(i)==44 ){
                 if( letra==true || num==true || opR==true ){//verifica si se estaba escribiendo algo antes
