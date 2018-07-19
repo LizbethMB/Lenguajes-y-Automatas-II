@@ -81,11 +81,11 @@ public class Interface extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Token", "Lexema", "Reservada", "Patron", "Linea"
+                "Token", "Lexema", "Reservada", "Patron", "Linea", "Valor", "Tipo"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
+                false, false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {

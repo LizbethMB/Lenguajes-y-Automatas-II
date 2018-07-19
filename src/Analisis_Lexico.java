@@ -233,7 +233,7 @@ public class Analisis_Lexico {
                         if( esNomMet(TV[AL]) ){
                             Simbolos = Simbolos + "Nombre Método,"+TV[AL]+",No,Caracter seguido de caracteres,"+linea+"#";
                         }else if( esId(TV[AL]) ){
-                            Simbolos = Simbolos + "Identificador,"+TV[AL]+",No,Caracter seguido de caracteres,"+linea+"#";
+                            Simbolos = Simbolos + "Identificador,"+TV[AL]+",No,Caracter seguido de caracteres,"+linea+","+valor(TV)+"#";
                         }else{
                             Simbolos = Simbolos + "Elemento Desconocido,"+TV[AL]+",No,?,"+linea+"#";
                         }
@@ -244,6 +244,21 @@ public class Analisis_Lexico {
         }//Fin recorrido palabras en linea
         return Simbolos;
     }//Fin Metodo Compile
+    
+    private String valor(String[] S){
+        boolean b=false;
+        String temp="";
+        for(int i=0; i<S.length; i++){
+            if( b==true )
+                temp = temp + S[i];
+            if( S[i].equals("=") )
+                b=true;
+        }
+        if(temp.equals("")){
+            temp = "null";
+        }
+        return temp;
+    }
     
     private String letraI(String C){
         if(C!=null){
@@ -933,27 +948,46 @@ public class Analisis_Lexico {
     //"q2"
         State="q1";
         switch(TokD.length()){
-     
-            
-            case 2:
-            {   State="q1";
+            case 2:{//Si
                 if(TokD.substring(1,2).equals("i")){
                     State="q2";
-                }//fin si el segundo caracter es 'e'
-                else{State="q3"; break;
-                }//Fin si el segundo caracter no es 'e'
-
-            }//Fin caso 2          
-        
-        }//fin switch
-    
-                if(State.equals("q2")){
-                    Simbolos=Simbolos+TokD+","+TokD+",Reservada,'s' seguida de 'i'"+","+linea+"#";
-                }
+                }//fin si el segundo caracter es 'i'
                 else{
-                 Simbolos=Simbolos+"Desconocido"+","+TokD+",,"+","+linea+"#";
-                }
-                State="q0";
+                    State="q8"; 
+                    break;
+                }//Fin si el segundo caracter no es 'i'
+            }//Fin caso 2
+            case 6://String
+                if(TokD.substring(1,2).equals("t")){
+                    State = "q3";
+                    if(TokD.substring(2,3).equals("r")){
+                        State = "q4";
+                        if(TokD.substring(3,4).equals("i")){
+                            State = "q5";
+                            if(TokD.substring(4,5).equals("n")){
+                                State = "q6";
+                                if(TokD.substring(5).equals("g")){
+                                    State = "q7";
+                                }else { State = "q8"; }
+                            }else { State = "q8"; }
+                        }else { State = "q8"; }
+                    }else { State = "q8"; }
+                }else { State = "q8"; }
+                break;//fin de caso 6
+        }//fin switch
+        switch (State) {
+            case "q2":
+                Simbolos=Simbolos+TokD+","+TokD+",Reservada,'s' seguida de 'i'"+","+linea+"#";
+                break;
+            case "q7":
+                Simbolos=Simbolos+TokD+","+TokD+",Reservada,'s' seguida de 't' seguida de 'r' seguida de 'i' seguida de 'n' seguida de 'g'"+","+linea+"#";
+                break;
+            default:
+                System.out.println("Entro a desconocido por: "+TokD);
+                Simbolos=Simbolos+"Desconocido"+","+TokD+",,"+","+linea+"#";
+                break;
+        }
+        State="q0";
     
    
  }//Fin Metodo TB 

@@ -284,7 +284,7 @@ public class Sintáctico {
             //System.out.println(Uno.length);
             //if(Uno.length==4){ //Hacemos un split con el punto de la instruccion
                 //String Instruccion[]=new String[4]; // Hacemos una arreglo donde guardaremos todas las partes de la instruccion
-                if(Uno[0].equals("Int")){
+                if(Uno[0].equals("Int") || Uno[0].equals("String") || Uno[0].equals("Double") ){
                     if( tipoDatos(Texto)==false){
                         Valida=Valida+"Error Sintactico;; Expresión no valida#";
                     }
@@ -508,16 +508,23 @@ public class Sintáctico {
     private boolean validaExp(String[] S){
         //Variable para saber que fue lo ultimo analizado
         boolean b=false;//false-> operador, true->id o numero
-        for(int i=0; i<S.length; i++){
-            if( b==true ){
-                b=false;
-                if( !S[i].equals("+") && !S[i].equals("-") && !S[i].equals("*") && !S[i].equals("/") && !S[i].equals(";") ){
-                    return false;
-                }
-            }else{
-                b=true;
-                if( !esNum(S[i]) && !esId(S[i]) ){
-                    return false;
+        if(S[0].equals("\"")){
+            if(!S[S.length-1].equals("\"")){
+                System.out.println("Expresión String no valida");
+                return false;
+            }
+        }else{
+            for(int i=0; i<S.length; i++){
+                if( b==true ){
+                    b=false;
+                    if( !S[i].equals("+") && !S[i].equals("-") && !S[i].equals("*") && !S[i].equals("/") && !S[i].equals(";") ){
+                        return false;
+                    }
+                }else{
+                    b=true;
+                    if( !esNum(S[i]) && !esId(S[i]) ){
+                        return false;
+                    }
                 }
             }
         }
