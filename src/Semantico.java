@@ -9,6 +9,10 @@ public class Semantico{
     Vector<String> palReservadas = new Vector<String>(), num = new Vector<String>();
     Vector<String> opRelacional = new Vector<String>(), opAritmetico = new Vector<String>();
     
+    Semantico(){
+        
+    }
+    
     Semantico(TableModel m){
         this.m = m; 
         separarTokens();

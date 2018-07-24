@@ -99,7 +99,7 @@ public class Interface extends javax.swing.JFrame {
         txtExp.setColumns(20);
         txtExp.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
         txtExp.setRows(5);
-        txtExp.setText("task MET (Int a) {\nBrazo.Elevar(Encendido);\nInt b=1+a;\n}");
+        txtExp.setText("Si (1 < 5) { Base.Der(Encendido); } No { Base.Izq(Encendido); }");
         jScrollPane1.setViewportView(txtExp);
 
         pnlPrincipal.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 11, 658, 267));

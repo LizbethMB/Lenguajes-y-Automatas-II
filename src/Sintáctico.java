@@ -16,6 +16,8 @@ public class Sintáctico {
     Pila cLP=new Pila();//Variable para llevar el control de las llaves y parentesis
     String State="q0";
     String cad="";
+    int temp=0;
+    Semantico b = new Semantico();
     public String cLlavesPar(String C){//Metodo para llevar el control de las llaves y parentesis
         String Llaves="";
         boolean b;
@@ -58,6 +60,10 @@ public class Sintáctico {
     public String MoverInstruccion(String Texto){
         String Valida="";//Bandera para saber si hay errores en la instruccion de movimiento
         String state="q0";//Estado inicial en 0
+        
+        if( Texto.substring(0, 1).equals("{") ){
+            Texto = Texto.substring(1);
+        }
 
         int Aux=0,Aux2=0,Aux3=0;
         for(int i=0;i<Texto.length();i++){
@@ -249,7 +255,6 @@ public class Sintáctico {
                     if(Instruccion[2].equals("(")){
                         state="q4";
                     }else{
-                        System.out.println("Error en Instruccion[2]");
                         state="q10"; Valida=Valida+"Error Sintactico;; Elemento despues del parentesis final#";
                         break;
                     }
@@ -280,19 +285,65 @@ public class Sintáctico {
             }
         }//Fin Si no hubo errores de tamaño
         else{
-            String Uno[]=Texto.split(" ");
-                if(Uno[0].equals("Int") || Uno[0].equals("String") || Uno[0].equals("Double") ){
-                    if( tipoDatos(Texto)==false){
-                        Valida=Valida+"Error Sintactico;; Expresión no valida#";
-                    }
-                }else if(!Uno[0].equals("}") && !Uno[0].equals(")")){
-                //System.out.println("Encuentra else: "+mostrar(Uno));
-                Valida=Valida+"Error Sintactico;; Instruccion no Valida, Debe ser movimiento o declaracion#";
+            
+            /*
+            else{
+                resto de tu codigo
             }
+            */
         }
-        return Valida;      
+        //System.out.println(state);
+        return Valida;
     }//Final metodo 
     
+    private String toString(String[] s){
+        String temp="";
+        for(int i=0; i<s.length; i++){
+            //System.out.println("s["+i+"]:"+s[i]);
+            if( s[i]!=null && !s[i].equals("") )
+                temp=temp+s[i];
+        }
+        return temp;
+    }
+    
+    private String mostrar(String[] s){
+        String temp="";
+        for(int i=0; i<s.length; i++){
+            //System.out.println("s["+i+"]:"+s[i]);
+            if( s[i]!=null && !s[i].equals("") )
+                temp=temp+s[i]+" | ";
+        }
+        return temp;
+    }
+    
+    private boolean esOpR(String l)
+    {
+        return (l.equals("<") || l.equals("==") || l.equals(">") || l.equals("<=") || l.equals(">="));
+    }
+    
+    public boolean expBool(String[] S)
+    {
+        boolean b = false;
+        for (int i=0; i<S.length; i++)
+        {
+            if( S[i].equals(")") ){
+                this.temp = i+1;
+                return true;
+            }
+            if( b==false)
+            {
+                if( !esId(S[i]) && !esNum(S[i]) )
+                {
+                    return false;
+                }else { b = true; }
+            }else if ( !esOpR(S[i]))
+            {
+                return false;
+            }else { b = false; }
+        }
+        return true;
+    }
+        
     public String[] generaArray(String Exp){
         boolean letra=false, num=false, opR=false, com=false;
         String Simbolos="";
@@ -393,15 +444,6 @@ public class Sintáctico {
             }
         }
         return Simbolos.split("#");
-    }
-    
-    private String mostrar(String[] s){
-        String temp="";
-        for(int i=0; i<s.length; i++){
-            if(!s[i].equals(""))
-                temp=temp+s[i]+" | ";
-        }
-        return temp;
     }
     
     public boolean validaTask(String Q){

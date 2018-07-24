@@ -150,7 +150,7 @@
                       <Font name="Dialog" size="18" style="0"/>
                     </Property>
                     <Property name="rows" type="int" value="5"/>
-                    <Property name="text" type="java.lang.String" value="task MET (Int a) {&#xa;Brazo.Elevar(Encendido);&#xa;Int b=1+a;&#xa;}"/>
+                    <Property name="text" type="java.lang.String" value="Si (1 &lt; 5) { Base.Der(Encendido); } No { Base.Izq(Encendido); }"/>
                   </Properties>
                 </Component>
               </SubComponents>

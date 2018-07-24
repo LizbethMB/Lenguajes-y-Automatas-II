@@ -430,17 +430,12 @@ public class Analisis_Lexico {
                 else{
                     State="q19"; break;
                 }//Else si no era i
-               
-                break;      
-                  
-                  
-                  
-              
+                break;
               }
         
                 
         
-             if(TokD.substring(1,2).equals("p")){
+                if(TokD.substring(1,2).equals("p")){
                     State="q9";
 
                 
@@ -984,6 +979,7 @@ public class Analisis_Lexico {
             case 2:{//Si
                 if(TokD.substring(1,2).equals("i")){
                     State="q2";
+                    break;
                 }//fin si el segundo caracter es 'i'
                 else{
                     State="q8"; 
